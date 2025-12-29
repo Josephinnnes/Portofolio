@@ -6,6 +6,43 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/effect-fade';
 
+// --- Theme Colors ---
+const colors = {
+  primary: {
+    50: '#f0f9ff',
+    100: '#e0f2fe',
+    200: '#bae6fd',
+    300: '#7dd3fc',
+    400: '#38bdf8',
+    500: '#0ea5e9',
+    600: '#0284c7',
+    700: '#0369a1',
+    800: '#075985',
+    900: '#0c4a6e',
+  },
+  neutral: {
+    50: '#fafafa',
+    100: '#f5f5f5',
+    200: '#e5e5e5',
+    300: '#d4d4d4',
+    400: '#a3a3a3',
+    500: '#737373',
+    600: '#525252',
+    700: '#404040',
+    800: '#262626',
+    900: '#171717',
+  },
+  success: {
+    500: '#10b981',
+  },
+  warning: {
+    500: '#f59e0b',
+  },
+  error: {
+    500: '#ef4444',
+  }
+};
+
 // --- Komponen Icon ---
 const CheckCircle = (props) => (
   <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -75,57 +112,60 @@ const Palette = (props) => (
   </svg>
 );
 
+const ChevronRight = (props) => (
+  <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <polyline points="9 18 15 12 9 6" />
+  </svg>
+);
+
 // --- Komponen Project Modal ---
 const ProjectModal = ({ isOpen, onClose, project }) => {
   if (!isOpen || !project) return null;
 
   return (
-    <div className="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-50 p-4" onClick={onClose}>
+    <div className="fixed inset-0 bg-neutral-900/90 backdrop-blur-sm flex items-center justify-center z-50 p-4" onClick={onClose}>
       <div 
-        className="bg-white rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto"
+        className="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto"
         onClick={e => e.stopPropagation()}
       >
         <div className="relative">
           <img 
             src={project.image} 
             alt={project.title}
-            className="w-full h-64 object-cover rounded-t-xl"
+            className="w-full h-72 object-cover rounded-t-2xl"
           />
           <button 
             onClick={onClose}
-            className="absolute top-4 right-4 bg-white/90 rounded-full p-2 hover:bg-white transition duration-200"
+            className="absolute top-6 right-6 bg-white/90 backdrop-blur-sm rounded-full p-3 hover:bg-white transition-all duration-200 hover:scale-110 shadow-lg"
           >
-            <X className="w-5 h-5 text-gray-700" />
+            <X className="w-5 h-5 text-neutral-700" />
           </button>
         </div>
         
         <div className="p-8">
-          <div className="flex items-center gap-3 mb-4">
-            <span className={`text-sm font-medium px-3 py-1 rounded-full ${
-              project.semester === 'Semester 3' ? 'bg-green-100 text-green-700' : 
-              project.semester === 'Semester 4' ? 'bg-blue-100 text-blue-700' : 
-              'bg-purple-100 text-purple-700'
-            }`}>
+          <div className="flex items-center gap-3 mb-6">
+            <span className={`text-sm font-semibold px-4 py-2 rounded-full ${project.semester.includes('Semester 3') ? 'bg-emerald-100 text-emerald-700' : project.semester.includes('Semester 4') ? 'bg-blue-100 text-blue-700' : project.semester.includes('Semester 5') ? 'bg-violet-100 text-violet-700' : 'bg-rose-100 text-rose-700'}`}>
               {project.semester}
             </span>
-            <span className="text-sm text-gray-500">{project.type}</span>
+            <span className="text-sm text-neutral-500 font-medium">{project.type}</span>
           </div>
 
-          <h2 className="text-3xl font-bold text-gray-800 mb-4 font-playfair">{project.title}</h2>
-          <p
-  className="text-gray-600 mb-6 leading-relaxed font-inter"
-  style={{ whiteSpace: "pre-line" }}
->
-  {project.fullDescription}
-</p>
+          <h2 className="text-4xl font-bold text-neutral-800 mb-6 font-playfair leading-tight">{project.title}</h2>
           
-          <div className="mb-6">
-            <h3 className="text-lg font-semibold text-gray-800 mb-3 font-inter">Teknologi yang Digunakan</h3>
-            <div className="flex flex-wrap gap-2">
+          <p className="text-neutral-600 mb-8 leading-relaxed text-lg font-inter" style={{ whiteSpace: "pre-line" }}>
+            {project.fullDescription}
+          </p>
+          
+          <div className="mb-8">
+            <h3 className="text-xl font-semibold text-neutral-800 mb-4 font-inter flex items-center gap-2">
+              <div className="w-2 h-6 bg-primary-500 rounded-full"></div>
+              Teknologi yang Digunakan
+            </h3>
+            <div className="flex flex-wrap gap-3">
               {project.technologies.map((tech, index) => (
                 <span 
                   key={index}
-                  className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm font-medium font-inter"
+                  className="px-4 py-2 bg-primary-50 text-primary-700 rounded-lg text-sm font-semibold font-inter border border-primary-100 hover:bg-primary-100 transition-colors duration-200"
                 >
                   {tech}
                 </span>
@@ -133,36 +173,34 @@ const ProjectModal = ({ isOpen, onClose, project }) => {
             </div>
           </div>
 
-          <div className="mb-6">
-            <h3 className="text-lg font-semibold text-gray-800 mb-3 font-inter">Fitur Utama</h3>
-            <ul className="space-y-2">
+          <div className="mb-8">
+            <h3 className="text-xl font-semibold text-neutral-800 mb-4 font-inter flex items-center gap-2">
+              <div className="w-2 h-6 bg-emerald-500 rounded-full"></div>
+              Fitur Utama
+            </h3>
+            <ul className="space-y-4">
               {project.features.map((feature, index) => (
-                <li key={index} className="flex items-start">
-                  <CheckCircle className="w-5 h-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" />
-                  <span className="text-gray-600 font-inter">{feature}</span>
+                <li key={index} className="flex items-start group">
+                  <div className="flex-shrink-0 mt-1 mr-4">
+                    <div className="w-6 h-6 rounded-full bg-emerald-100 flex items-center justify-center group-hover:bg-emerald-200 transition-colors duration-200">
+                      <CheckCircle className="w-3 h-3 text-emerald-600" />
+                    </div>
+                  </div>
+                  <span className="text-neutral-700 font-inter text-lg">{feature}</span>
                 </li>
               ))}
             </ul>
           </div>
 
-          {project.challenges && (
-            <div className="mb-6">
-              <h3 className="text-lg font-semibold text-gray-800 mb-3 font-inter">Tantangan & Solusi</h3>
-              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-                <p className="text-gray-700 font-inter">{project.challenges}</p>
-              </div>
-            </div>
-          )}
-
-          <div className="flex gap-4">
+          <div className="flex gap-4 pt-6 border-t border-neutral-200">
             {project.demoLink && (
               <a 
                 href={project.demoLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center px-6 py-3 bg-gray-800 text-white rounded-lg hover:bg-gray-900 transition duration-200 font-inter"
+                className="flex items-center px-8 py-4 bg-white text-black border-2 border-neutral-300 rounded-xl hover:bg-neutral-50 hover:border-black transition-all duration-300 font-inter font-semibold hover:shadow-lg hover:-translate-y-1"
               >
-                <ExternalLink className="w-4 h-4 mr-2" />
+                <ExternalLink className="w-5 h-5 mr-3 text-black" />
                 Live Demo
               </a>
             )}
@@ -171,9 +209,9 @@ const ProjectModal = ({ isOpen, onClose, project }) => {
                 href={project.githubLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center px-6 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition duration-200 font-inter"
+                className="flex items-center px-8 py-4 bg-neutral-800 text-white rounded-xl hover:bg-neutral-900 transition-all duration-300 font-inter font-semibold hover:shadow-lg hover:-translate-y-1"
               >
-                <Github className="w-4 h-4 mr-2" />
+                <Github className="w-5 h-5 mr-3" />
                 Source Code
               </a>
             )}
@@ -182,9 +220,9 @@ const ProjectModal = ({ isOpen, onClose, project }) => {
                 href={project.figmaLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition duration-200 font-inter"
+                className="flex items-center px-8 py-4 bg-purple-600 text-white rounded-xl hover:bg-purple-700 transition-all duration-300 font-inter font-semibold hover:shadow-lg hover:-translate-y-1"
               >
-                <Palette className="w-4 h-4 mr-2" />
+                <Palette className="w-5 h-5 mr-3" />
                 Figma Design
               </a>
             )}
@@ -196,11 +234,14 @@ const ProjectModal = ({ isOpen, onClose, project }) => {
 };
 
 // --- Komponen Container ---
-const Container = ({ children, className = "" }) => (
-  <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ${className}`}>
-    {children}
-  </div>
-);
+const Container = ({ children, className = "", size = "default" }) => {
+  const maxWidth = size === "small" ? "max-w-4xl" : "max-w-7xl";
+  return (
+    <div className={`${maxWidth} mx-auto px-6 sm:px-8 lg:px-10 ${className}`}>
+      {children}
+    </div>
+  );
+};
 
 // --- Main Portfolio Component ---
 const Portfolio = () => {
@@ -208,17 +249,17 @@ const Portfolio = () => {
   const [selectedProject, setSelectedProject] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Data Projects berdasarkan repository Anda - DIPERBARUI
+  // Data Projects
   const projects = {
     semester3: [
       {
         id: 1,
         title: "Sistem Bebas Tanggungan POLINEMA",
-        description: "Sistem berbasis web yang dirancang untuk mempermudah mahasiswa dalam memantau dan menyelesaikan tanggungan administratif seperti tugas akhir, kompen, pembayaran UKT, peminjaman buku, SKKM, dan TOEIC.",
+        description: "Sistem berbasis web untuk memantau dan menyelesaikan tanggungan administratif mahasiswa.",
         image: "/assets/BebasTanggungan.png",
         semester: "Semester 3", 
         type: "Full Stack Application",
-        technologies: ["PHP"],
+        technologies: ["PHP", "MySQL", "Bootstrap"],
         features: [
           "Mengunggah Tugas Akhir (TA)",
           "Bebas Kompen",
@@ -243,11 +284,11 @@ const Portfolio = () => {
       {
         id: 2,
         title: "TOEICLY",
-        description: "TOEICLY merupakan sistem informasi berbasis web yang dikembangkan untuk mendukung proses pendaftaran, pengelolaan jadwal, dan pengumuman hasil ujian TOEIC di lingkungan kampus. Sistem ini dirancang untuk mempermudah mahasiswa dan admin dalam mengelola seluruh proses ujian secara terintegrasi.",
+        description: "Sistem informasi berbasis web untuk pengelolaan ujian TOEIC di lingkungan kampus.",
         image: "/assets/Toeic.png",
         semester: "Semester 4",
         type: "Full Stack Application",
-        technologies: ["Laravel", "Bootstrap", "Database"],
+        technologies: ["Laravel", "Bootstrap", "MySQL", "JavaScript"],
         features: [
           "Pendaftaran Online Mahasiswa",
           "Verifikasi Data oleh Admin Jurusan",
@@ -262,7 +303,7 @@ const Portfolio = () => {
         
         Pada sistem ini, mahasiswa dapat melakukan pendaftaran ujian TOEIC secara online, mengunggah dokumen pendukung, melihat jadwal ujian, serta mengakses informasi hasil ujian dan sertifikat. Sementara itu, admin memiliki fitur untuk mengelola data peserta, jadwal ujian, hasil ujian, serta manajemen pengguna.
         
-        Proyek ini dikerjakan secara tim dengan pembagian peran yang jelas, dan dikembangkan menggunakan pendekatan pengembangan sistem yang terstruktur. Saya terlibat dalam proses perancangan antarmuka (UI),pengembangan fitur frontend, database mysql, serta penyusunan dokumentasi sistem seperti SKPL (Spesifikasi Kebutuhan Perangkat Lunak).
+        Proyek ini dikerjakan secara tim dengan pembagian peran yang jelas, dan dikembangkan menggunakan pendekatan pengembangan sistem yang terstruktur. Saya terlibat dalam proses perancangan antarmuka (UI), pengembangan fitur frontend, database mysql, serta penyusunan dokumentasi sistem seperti SKPL (Spesifikasi Kebutuhan Perangkat Lunak).
         
         Melalui proyek TOEICLY, saya memperoleh pengalaman nyata dalam membangun sistem informasi berbasis web yang sesuai dengan kebutuhan pengguna, meningkatkan kemampuan kerja tim, serta memahami alur pengembangan sistem dari tahap analisis hingga implementasi.`,
         githubLink: "https://github.com/SuryaRf/TOEICLY.git",
@@ -273,11 +314,11 @@ const Portfolio = () => {
       {
         id: 3,
         title: "Website Manajemen Keselamatan dan Kesehatan Kerja (K3)",
-        description: "Website sistem informasi Kesehatan dan Keselamatan Kerja (K3) yang dikembangkan sebagai proyek perkuliahan untuk mendukung pencatatan, pemantauan, dan pengelolaan data K3 di lingkungan perusahaan manufaktur.",
+        description: "Website sistem informasi K3 untuk mendukung pencatatan, pemantauan, dan pengelolaan data K3 di perusahaan.",
         image: "/assets/K3.png",
         semester: "Semester 5",
         type: "Full Stack Application",
-        technologies: ["React"],
+        technologies: ["React.js", "Tailwind CSS", "JavaScript", "REST API"],
         features: [
           "Dashboard interaktif untuk monitoring K3",
           "Sistem pelaporan pelanggaran anonim",
@@ -303,12 +344,12 @@ const Portfolio = () => {
   const testCaseProjects = [
     {
       id: 4,
-      title: "Website Pembelian Paket Internet (Frontend Project)",
-      description: "Website pembelian paket internet yang dikembangkan sebagai project frontend menggunakan React. Fokus pada tampilan UI, pengelolaan data paket menggunakan JSON, serta interaksi pengguna yang sederhana dan responsif.",
+      title: "Website Pembelian Paket Internet",
+      description: "Website frontend untuk pembelian paket internet dengan React.js dan mock API.",
       image: "/assets/Website Tes Intern PT. DWP.png",
       semester: "Case Study Intern – PT. Dutakom Wibawa Putra",
       type: "Frontend Focus",
-      technologies: ["React.js", "ant design", "mock server API", "db.json"],
+      technologies: ["React.js", "Ant Design", "Mock Server API", "JSON Server", "CSS Modules"],
       features: [
         "Pemilihan paket internet dengan berbagai pilihan kuota, masa aktif, dan harga",
         "Pemilihan metode pembayaran (Bank Transfer, E-Wallet, Pulsa, dan lain-lain)",
@@ -317,7 +358,7 @@ const Portfolio = () => {
         "Notifikasi status transaksi (berhasil, promo diterapkan, dll)",
         "Manajemen data pengguna (edit data user)"
       ],
-      fullDescription: `Website ini merupakan tugas tes magang dari PT. Dutakom Wibawa Putra (DWP Group) yang dikerjakan sebagai bagian dari proses seleksi magang. Proyek ini diselesaikan dalam waktu 2 hari, dengan fokus utama pada frontend sesuai dengan posisi yang saya lamar.
+      fullDescription: `Website ini merupakan tugas tes magang dari PT. Dutakom Wibawa Putra (DWP Group) yang dikerjakan sebagai bagian dari proses seleksi magang. Proyek ini diberi waktu waktu 2 hari, dengan fokus utama pada frontend sesuai dengan posisi yang saya lamar.
       
       Pada proyek ini, saya membangun website pembelian paket internet menggunakan React.js, dengan pendekatan component-based dan pengelolaan state menggunakan React Hooks. Data paket internet disimulasikan menggunakan JSON (db.json) sebagai mock API untuk menampilkan daftar paket, harga, dan informasi detail lainnya.
       
@@ -332,27 +373,32 @@ const Portfolio = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white font-inter">
-      {/* Header */}
-      <header className="sticky top-0 z-40 bg-white/90 backdrop-blur-md shadow-sm border-b border-gray-100">
+    <div className="min-h-screen bg-white font-inter selection:bg-primary-100 selection:text-primary-900">
+      {/* Header - Diubah: Hanya Portfolio saja */}
+      <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md shadow-sm border-b border-neutral-100">
         <Container>
-          <div className="py-4 flex justify-between items-center">
-            <div className="text-2xl font-bold text-gray-800 font-playfair">
+          <div className="py-5 flex justify-between items-center">
+            <div className="text-3xl font-bold text-primary-700 font-playfair tracking-tight">
               Portfolio
             </div>
             
             {/* Desktop Navigation */}
-            <nav className="hidden md:flex space-x-8">
-              <a href="#home" className="text-gray-700 hover:text-gray-900 transition duration-300 font-medium font-inter">Home</a>
-              <a href="#projects" className="text-gray-700 hover:text-gray-900 transition duration-300 font-medium font-inter">Projects</a>
-              <a href="#skills" className="text-gray-700 hover:text-gray-900 transition duration-300 font-medium font-inter">Tech Stack</a>
-              <a href="#about" className="text-gray-700 hover:text-gray-900 transition duration-300 font-medium font-inter">About</a>
-              <a href="#contact" className="text-gray-700 hover:text-gray-900 transition duration-300 font-medium font-inter">Contact</a>
+            <nav className="hidden lg:flex space-x-10">
+              {['Home', 'Projects', 'Tech Stack', 'About', 'Contact'].map((item) => (
+                <a 
+                  key={item}
+                  href={`#${item.toLowerCase()}`} 
+                  className="text-neutral-700 hover:text-primary-600 transition-colors duration-300 font-medium font-inter text-lg relative group"
+                >
+                  {item}
+                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary-600 group-hover:w-full transition-all duration-300"></span>
+                </a>
+              ))}
             </nav>
 
             {/* Mobile Menu Button */}
             <button 
-              className="md:hidden text-gray-700"
+              className="lg:hidden text-neutral-700 p-2 hover:bg-neutral-100 rounded-lg transition-colors duration-200"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
               {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -361,59 +407,70 @@ const Portfolio = () => {
 
           {/* Mobile Navigation */}
           {isMenuOpen && (
-            <div className="md:hidden absolute top-full left-0 right-0 bg-white shadow-lg border-t border-gray-100">
-              <div className="flex flex-col space-y-4 py-6 px-4">
-                <a href="#home" onClick={() => setIsMenuOpen(false)} className="text-gray-700 hover:text-gray-900 transition duration-300 font-medium font-inter">Home</a>
-                <a href="#projects" onClick={() => setIsMenuOpen(false)} className="text-gray-700 hover:text-gray-900 transition duration-300 font-medium font-inter">Projects</a>
-                <a href="#skills" onClick={() => setIsMenuOpen(false)} className="text-gray-700 hover:text-gray-900 transition duration-300 font-medium font-inter">Tech Stack</a>
-                <a href="#about" onClick={() => setIsMenuOpen(false)} className="text-gray-700 hover:text-gray-900 transition duration-300 font-medium font-inter">About</a>
-                <a href="#contact" onClick={() => setIsMenuOpen(false)} className="text-gray-700 hover:text-gray-900 transition duration-300 font-medium font-inter">Contact</a>
+            <div className="lg:hidden absolute top-full left-0 right-0 bg-white shadow-xl border-t border-neutral-100 animate-slideDown">
+              <div className="flex flex-col space-y-1 py-6 px-6">
+                {['Home', 'Projects', 'Tech Stack', 'About', 'Contact'].map((item) => (
+                  <a 
+                    key={item}
+                    href={`#${item.toLowerCase()}`} 
+                    onClick={() => setIsMenuOpen(false)}
+                    className="text-neutral-700 hover:text-primary-600 hover:bg-primary-50 transition-colors duration-300 font-medium font-inter py-4 px-4 rounded-lg text-lg"
+                  >
+                    {item}
+                  </a>
+                ))}
               </div>
             </div>
           )}
         </Container>
       </header>
 
-      {/* Hero Section dengan Foto Lingkaran */}
-      <section id="home" className="pt-16 pb-20 bg-gradient-to-br from-gray-50 to-gray-100">
-        <Container>
+      {/* Hero Section */}
+      <section id="home" className="pt-16 pb-20 bg-gradient-to-br from-primary-50 via-white to-primary-50">
+        <Container size="small">
           <div className="text-center max-w-4xl mx-auto">
-            {/* Foto Profile Lingkaran */}
+            {/* Foto Profile */}
             <div className="flex justify-center mb-8">
               <div className="relative">
+                <div className="absolute -inset-4 bg-gradient-to-r from-primary-400 to-primary-600 rounded-full blur-xl opacity-30 animate-pulse"></div>
                 <img 
                   src="/assets/profile.jpeg" 
-                  alt="Profile"
-                  className="w-48 h-48 rounded-full object-cover border-4 border-white shadow-lg"
+                  alt="Josephine Antonia"
+                  className="relative w-60 h-60 rounded-full object-cover border-4 border-white shadow-2xl"
                 />
-                <div className="absolute inset-0 rounded-full border-2 border-gray-200 animate-pulse"></div>
               </div>
             </div>
             
-            {/* Nama */}
-            <h1 className="text-4xl md:text-6xl font-bold mb-4 text-gray-800 font-playfair">
-             <span className="text-gray-900">Josephine Antonia</span>
+            {/* Nama - Dipindah ke bawah foto */}
+            <h1 className="text-5xl md:text-6xl font-bold mb-6 text-neutral-800 font-playfair leading-tight">
+              <span className="black">
+                Josephine Antonia
+              </span>
             </h1>
             
             {/* Title */}
-            <p className="text-xl md:text-2xl text-gray-600 mb-8 leading-relaxed font-inter max-w-2xl mx-auto">
-              Full-Stack Developer dengan minat pada pengembangan aplikasi web end-to-end, mulai dari frontend, backend, hingga pengelolaan database.
-              Aktif mengembangkan aplikasi web melalui berbagai proyek akademik dan studi kasus, serta terus meningkatkan kemampuan teknis.
+            <p className="text-2xl text-neutral-600 mb-6 leading-relaxed font-inter max-w-3xl mx-auto font-light">
+              Full-Stack Developer yang mengembangkan aplikasi web dari frontend hingga backend, dengan fokus pada fungsionalitas, kualitas kode, dan pengalaman pengguna.
+              </p>
+            
+            <p className="text-lg text-neutral-500 mb-10 leading-relaxed font-inter max-w-2xl mx-auto">
+              Mengembangkan aplikasi web secara end-to-end dengan perhatian pada kualitas kode, kenyamanan pengguna, dan solusi teknis yang dapat dikembangkan.
             </p>
             
-            {/* Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            {/* Buttons - DIPERBAIKI: "Hubungi Saya" di tengah */}
+            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center w-full mt-8">
               <a 
                 href="#projects" 
-                className="px-8 py-4 bg-gray-800 text-white font-semibold rounded-lg hover:bg-gray-900 transition duration-300 transform hover:scale-105 font-inter"
-              >
-                Projek Saya
+                className="inline-flex items-center justify-center px-10 py-5 bg-white text-black border-2 border-gray-300 font-semibold rounded-xl hover:bg-gray-50 hover:border-black transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg font-inter text-lg w-full sm:w-auto"
+                >
+                <span>Lihat Projek</span>
+                <ChevronRight className="w-5 h-5 ml-2 text-black" />
               </a>
               <a 
                 href="#contact" 
-                className="px-8 py-4 border-2 border-gray-800 text-gray-800 font-semibold rounded-lg hover:bg-gray-800 hover:text-white transition duration-300 font-inter"
+                className="inline-flex items-center justify-center px-10 py-5 bg-white text-black border-2 border-gray-300 font-semibold rounded-xl hover:bg-gray-50 hover:border-black transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg font-inter text-lg w-full sm:w-auto"
               >
-                Kontak
+                Hubungi Saya
               </a>
             </div>
           </div>
@@ -421,336 +478,199 @@ const Portfolio = () => {
       </section>
 
       {/* Projects Section */}
-      <section id="projects" className="py-20 bg-white">
+      <section id="projects" className="py-20 bg-neutral-50">
         <Container>
-          <h2 className="text-4xl font-bold text-center mb-4 text-gray-800 font-playfair">
-            Projek Semester
-          </h2>
-          <p className="text-center text-gray-600 mb-12 max-w-2xl mx-auto font-inter">
-            Perkembangan project web development dari semester ke semester
-          </p>
-
-          {/* Semester 3 Projects */}
-          <div className="mb-16">
-            <h3 className="text-2xl font-bold text-gray-800 mb-8 border-l-4 border-green-500 pl-4 font-playfair">
-              Semester 3 
-            </h3>
-            <p className="text-gray-600 mb-8 max-w-3xl font-inter">
-              Project semester 3 fokus pada pengembangan foundational skills dalam full-stack development basics.
+          {/* Section Header */}
+          <div className="text-center mb-16">
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary-100 mb-6">
+              <CodeIcon className="w-8 h-8 text-primary-600" />
+            </div>
+            <h2 className="text-4xl md:text-5xl font-bold text-neutral-800 mb-6 font-playfair leading-tight">
+              Portofolio Projek
+            </h2>
+            <p className="text-xl text-neutral-600 max-w-2xl mx-auto font-inter font-light">
+              Pengembangan web dari fundamental hingga implementasi kompleks
             </p>
-            <div className="grid grid-cols-1 gap-8">
-              {projects.semester3.map(project => (
-                <div 
-                  key={project.id}
-                  className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition duration-300 cursor-pointer transform hover:-translate-y-1 border border-gray-100"
-                  onClick={() => handleProjectClick(project)}
-                >
-                  <div className="md:flex">
-                    <div className="md:w-2/5">
-                      <img 
-                        src={project.image} 
-                        alt={project.title}
-                        className="w-full h-64 md:h-full object-cover"
-                      />
-                    </div>
-                    <div className="md:w-3/5 p-6">
-                      <div className="flex items-center gap-2 mb-3">
-                        <span className="text-sm font-medium text-green-600 bg-green-100 px-2 py-1 rounded font-inter">
-                          {project.semester}
-                        </span>
-                        <span className="text-sm text-gray-500 font-inter">{project.type}</span>
+          </div>
+
+          {/* Semester Sections */}
+          {[
+            { 
+              title: "Semester 3", 
+              projects: projects.semester3, 
+              color: "emerald",
+              description: "Membangun foundational skills dalam pengembangan web full-stack dasar"
+            },
+            { 
+              title: "Semester 4", 
+              projects: projects.semester4, 
+              color: "blue",
+              description: "Mengembangkan sistem informasi kompleks dengan database design"
+            },
+            { 
+              title: "Semester 5", 
+              projects: projects.semester5, 
+              color: "violet",
+              description: "Menerapkan arsitektur modern dengan React.js dan component-based design"
+            }
+          ].map((section) => (
+            <div key={section.title} className="mb-16">
+              <div className="flex items-center gap-4 mb-10">
+                <div className={`w-3 h-12 bg-${section.color}-500 rounded-full`}></div>
+                <div>
+                  <h3 className="text-3xl font-bold text-neutral-800 font-playfair">{section.title}</h3>
+                  <p className="text-neutral-600 font-inter mt-2">{section.description}</p>
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-1 gap-8">
+                {section.projects.map(project => (
+                  <div 
+                    key={project.id}
+                    className="group bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-500 cursor-pointer transform hover:-translate-y-2 border border-neutral-100"
+                    onClick={() => handleProjectClick(project)}
+                  >
+                    <div className="md:flex">
+                      <div className="md:w-2/5 relative overflow-hidden">
+                        <img 
+                          src={project.image} 
+                          alt={project.title}
+                          className="w-full h-72 md:h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
                       </div>
-                      <h4 className="text-2xl font-semibold text-gray-800 mb-3 font-playfair">
-                        {project.title}
-                      </h4>
-                      <p className="text-gray-600 mb-4 font-inter">
-                        {project.description}
-                      </p>
-                      <div className="flex flex-wrap gap-2 mb-4">
-                        {project.technologies.map((tech, index) => (
-                          <span 
-                            key={index}
-                            className="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded font-inter"
-                          >
-                            {tech}
+                      <div className="md:w-3/5 p-8">
+                        <div className="flex items-center gap-3 mb-6">
+                          <span className={`text-sm font-semibold px-4 py-2 rounded-full bg-${section.color}-100 text-${section.color}-700`}>
+                            {project.semester}
                           </span>
-                        ))}
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <button className="text-gray-800 font-medium hover:text-gray-900 transition duration-200 flex items-center font-inter">
-                          Explore Project <CodeIcon className="w-4 h-4 ml-1" />
-                        </button>
-                        <div className="flex gap-3">
-                          <a 
-                            href={project.githubLink}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-gray-500 hover:text-gray-700 transition duration-200"
-                            onClick={e => e.stopPropagation()}
-                          >
-                            <Github className="w-5 h-5" />
-                          </a>
-                          {project.demoLink && (
-                            <a 
-                              href={project.demoLink}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-gray-500 hover:text-gray-800 transition duration-200"
-                              onClick={e => e.stopPropagation()}
+                          <span className="text-sm text-neutral-500 font-medium">{project.type}</span>
+                        </div>
+                        <h4 className="text-2xl font-bold text-neutral-800 mb-4 font-playfair group-hover:text-primary-600 transition-colors duration-300">
+                          {project.title}
+                        </h4>
+                        <p className="text-neutral-600 mb-6 font-inter text-lg leading-relaxed">
+                          {project.description}
+                        </p>
+                        <div className="flex flex-wrap gap-3 mb-8">
+                          {project.technologies.slice(0, 4).map((tech, index) => (
+                            <span 
+                              key={index}
+                              className="text-sm bg-neutral-100 text-neutral-700 px-3 py-1.5 rounded-lg font-medium font-inter"
                             >
-                              <ExternalLink className="w-5 h-5" />
-                            </a>
+                              {tech}
+                            </span>
+                          ))}
+                          {project.technologies.length > 4 && (
+                            <span className="text-sm bg-neutral-100 text-neutral-700 px-3 py-1.5 rounded-lg font-medium font-inter">
+                              +{project.technologies.length - 4} more
+                            </span>
                           )}
+                        </div>
+                        <div className="flex justify-between items-center pt-6 border-t border-neutral-100">
+                          <button className="inline-flex items-center text-primary-600 font-semibold hover:text-primary-700 transition-colors duration-300 font-inter text-lg group/btn">
+                            <span>Detail Projek</span>
+                            <ChevronRight className="w-5 h-5 ml-2 transform group-hover/btn:translate-x-1 transition-transform duration-300" />
+                          </button>
+                          <div className="flex gap-4">
+                            {project.githubLink && (
+                              <a 
+                                href={project.githubLink}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-neutral-400 hover:text-neutral-700 transition-colors duration-300 p-2 hover:bg-neutral-100 rounded-lg"
+                                onClick={e => e.stopPropagation()}
+                              >
+                                <Github className="w-5 h-5" />
+                              </a>
+                            )}
+                            {project.demoLink && (
+                              <a 
+                                href={project.demoLink}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-neutral-400 hover:text-primary-600 transition-colors duration-300 p-2 hover:bg-primary-50 rounded-lg"
+                                onClick={e => e.stopPropagation()}
+                              >
+                                <ExternalLink className="w-5 h-5" />
+                              </a>
+                            )}
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
-          </div>
+          ))}
 
-          {/* Semester 4 Projects */}
+          {/* Case Study Intern - Dipindah ke bawah Semester 5 */}
           <div className="mb-16">
-            <h3 className="text-2xl font-bold text-gray-800 mb-8 border-l-4 border-blue-500 pl-4 font-playfair">
-              Semester 4
-            </h3>
-            <p className="text-gray-600 mb-8 max-w-3xl font-inter">
-              Project semester 4 kemampuan full-stack development dan database design.
-            </p>
-            <div className="grid grid-cols-1 gap-8">
-              {projects.semester4.map(project => (
-                <div 
-                  key={project.id}
-                  className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition duration-300 cursor-pointer transform hover:-translate-y-1 border border-gray-100"
-                  onClick={() => handleProjectClick(project)}
-                >
-                  <div className="md:flex">
-                    <div className="md:w-2/5">
-                      <img 
-                        src={project.image} 
-                        alt={project.title}
-                        className="w-full h-64 md:h-full object-cover"
-                      />
-                    </div>
-                    <div className="md:w-3/5 p-6">
-                      <div className="flex items-center gap-2 mb-3">
-                        <span className="text-sm font-medium text-blue-600 bg-blue-100 px-2 py-1 rounded font-inter">
-                          {project.semester}
-                        </span>
-                        <span className="text-sm text-gray-500 font-inter">{project.type}</span>
-                      </div>
-                      <h4 className="text-2xl font-semibold text-gray-800 mb-3 font-playfair">
-                        {project.title}
-                      </h4>
-                      <p className="text-gray-600 mb-4 font-inter">
-                        {project.description}
-                      </p>
-                      <div className="flex flex-wrap gap-2 mb-4">
-                        {project.technologies.map((tech, index) => (
-                          <span 
-                            key={index}
-                            className="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded font-inter"
-                          >
-                            {tech}
-                          </span>
-                        ))}
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <button className="text-gray-800 font-medium hover:text-gray-900 transition duration-200 flex items-center font-inter">
-                          Explore Project <CodeIcon className="w-4 h-4 ml-1" />
-                        </button>
-                        <div className="flex gap-3">
-                          <a 
-                            href={project.githubLink}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-gray-500 hover:text-gray-700 transition duration-200"
-                            onClick={e => e.stopPropagation()}
-                          >
-                            <Github className="w-5 h-5" />
-                          </a>
-                          {project.demoLink && (
-                            <a 
-                              href={project.demoLink}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-gray-500 hover:text-gray-800 transition duration-200"
-                              onClick={e => e.stopPropagation()}
-                            >
-                              <ExternalLink className="w-5 h-5" />
-                            </a>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
+            <div className="flex items-center gap-4 mb-10">
+              <div className="w-3 h-12 bg-rose-500 rounded-full"></div>
+              <div>
+                <h3 className="text-3xl font-bold text-neutral-800 font-playfair">Case Study Intern – PT. Dutakom Wibawa Putra</h3>
+                <p className="text-neutral-600 font-inter mt-2">Pengalaman mengerjakan studi kasus nyata dengan batas waktu ketat</p>
+              </div>
             </div>
-          </div>
-
-          {/* Semester 5 Projects */}
-          <div className="mb-16">
-            <h3 className="text-2xl font-bold text-gray-800 mb-8 border-l-4 border-purple-500 pl-4 font-playfair">
-              Semester 5 
-            </h3>
-            <p className="text-gray-600 mb-8 max-w-3xl font-inter">
-              Project K3 semester 5 yang dikembangkan menggunakan React.js.
-            </p>
-            <div className="grid grid-cols-1 gap-8">
-              {projects.semester5.map(project => (
-                <div 
-                  key={project.id}
-                  className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition duration-300 cursor-pointer transform hover:-translate-y-1 border border-gray-100"
-                  onClick={() => handleProjectClick(project)}
-                >
-                  <div className="md:flex">
-                    <div className="md:w-2/5">
-                      <img 
-                        src={project.image} 
-                        alt={project.title}
-                        className="w-full h-64 md:h-full object-cover"
-                      />
-                    </div>
-                    <div className="md:w-3/5 p-6">
-                      <div className="flex items-center gap-2 mb-3">
-                        <span className="text-sm font-medium text-purple-600 bg-purple-100 px-2 py-1 rounded font-inter">
-                          {project.semester}
-                        </span>
-                        <span className="text-sm text-gray-500 font-inter">{project.type}</span>
-                      </div>
-                      <h4 className="text-2xl font-semibold text-gray-800 mb-3 font-playfair">
-                        {project.title}
-                      </h4>
-                      <p className="text-gray-600 mb-4 font-inter">
-                        {project.description}
-                      </p>
-                      <div className="flex flex-wrap gap-2 mb-4">
-                        {project.technologies.map((tech, index) => (
-                          <span 
-                            key={index}
-                            className="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded font-inter"
-                          >
-                            {tech}
-                          </span>
-                        ))}
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <button className="text-gray-800 font-medium hover:text-gray-900 transition duration-200 flex items-center font-inter">
-                          Explore Project <CodeIcon className="w-4 h-4 ml-1" />
-                        </button>
-                        <div className="flex gap-3">
-                          {project.githubLink && (
-                            <a 
-                              href={project.githubLink}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-gray-500 hover:text-gray-700 transition duration-200"
-                              onClick={e => e.stopPropagation()}
-                            >
-                              <Github className="w-5 h-5" />
-                            </a>
-                          )}
-                          {project.demoLink && (
-                            <a 
-                              href={project.demoLink}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-gray-500 hover:text-gray-800 transition duration-200"
-                              onClick={e => e.stopPropagation()}
-                            >
-                              <ExternalLink className="w-5 h-5" />
-                            </a>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Projek Test Case Section */}
-          <div className="mt-16 pt-8">
-            <h3 className="text-2xl font-bold text-gray-800 mb-8 border-l-4 border-pink-500 pl-4 font-playfair">
-              Web Application Case Study – PT. Dutakom Wibawa Putra
-            </h3>
-            <p className="text-gray-600 mb-8 max-w-3xl font-inter">
-              Website frontend yang dikembangkan menggunakan React.js dengan data dari JSON Server (db.json). Project ini berfokus pada pembuatan antarmuka yang responsif, dan penerapan konsep dasar frontend development seperti component, state, dan data fetching.
-            </p>
+            
             <div className="grid grid-cols-1 gap-8">
               {testCaseProjects.map(project => (
                 <div 
                   key={project.id}
-                  className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition duration-300 cursor-pointer transform hover:-translate-y-1 border border-gray-100"
+                  className="group bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-500 cursor-pointer transform hover:-translate-y-2 border border-neutral-100"
                   onClick={() => handleProjectClick(project)}
                 >
                   <div className="md:flex">
-                    <div className="md:w-2/5">
+                    <div className="md:w-2/5 relative overflow-hidden">
                       <img 
                         src={project.image} 
                         alt={project.title}
-                        className="w-full h-64 md:h-full object-cover"
+                        className="w-full h-72 md:h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
                     </div>
-                    <div className="md:w-3/5 p-6">
-                      <div className="flex items-center gap-2 mb-3">
-                        <span className="text-sm font-medium text-pink-600 bg-pink-100 px-2 py-1 rounded font-inter">
+                    <div className="md:w-3/5 p-8">
+                      <div className="flex items-center gap-3 mb-6">
+                        <span className="text-sm font-semibold px-4 py-2 rounded-full bg-rose-100 text-rose-700">
                           {project.semester}
                         </span>
-                        <span className="text-sm text-gray-500 font-inter">{project.type}</span>
+                        <span className="text-sm text-neutral-500 font-medium">{project.type}</span>
                       </div>
-                      <h4 className="text-2xl font-semibold text-gray-800 mb-3 font-playfair">
+                      <h4 className="text-2xl font-bold text-neutral-800 mb-4 font-playfair group-hover:text-primary-600 transition-colors duration-300">
                         {project.title}
                       </h4>
-                      <p className="text-gray-600 mb-4 font-inter">
+                      <p className="text-neutral-600 mb-6 font-inter text-lg leading-relaxed">
                         {project.description}
                       </p>
-                      <div className="flex flex-wrap gap-2 mb-4">
-                        {project.technologies.map((tech, index) => (
+                      <div className="flex flex-wrap gap-3 mb-8">
+                        {project.technologies.slice(0, 4).map((tech, index) => (
                           <span 
                             key={index}
-                            className="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded font-inter"
+                            className="text-sm bg-rose-50 text-rose-700 px-3 py-1.5 rounded-lg font-medium font-inter border border-rose-100"
                           >
                             {tech}
                           </span>
                         ))}
+                        {project.technologies.length > 4 && (
+                          <span className="text-sm bg-rose-50 text-rose-700 px-3 py-1.5 rounded-lg font-medium font-inter border border-rose-100">
+                            +{project.technologies.length - 4} more
+                          </span>
+                        )}
                       </div>
-                      <div className="flex justify-between items-center">
-                        <button className="text-gray-800 font-medium hover:text-gray-900 transition duration-200 flex items-center font-inter">
-                          Explore Project <CodeIcon className="w-4 h-4 ml-1" />
+                      <div className="flex justify-between items-center pt-6 border-t border-neutral-100">
+                        <button className="inline-flex items-center text-primary-600 font-semibold hover:text-primary-700 transition-colors duration-300 font-inter text-lg group/btn">
+                          <span>Detail Projek</span>
+                          <ChevronRight className="w-5 h-5 ml-2 transform group-hover/btn:translate-x-1 transition-transform duration-300" />
                         </button>
-                        <div className="flex gap-3">
-                          {project.githubLink && (
-                            <a 
-                              href={project.githubLink}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-gray-500 hover:text-gray-700 transition duration-200"
-                              onClick={e => e.stopPropagation()}
-                            >
-                              <Github className="w-5 h-5" />
-                            </a>
-                          )}
-                          {project.figmaLink && (
-                            <a 
-                              href={project.figmaLink}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-gray-500 hover:text-pink-600 transition duration-200"
-                              onClick={e => e.stopPropagation()}
-                            >
-                              <Palette className="w-5 h-5" />
-                            </a>
-                          )}
+                        <div className="flex gap-4">
                           {project.demoLink && (
                             <a 
                               href={project.demoLink}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="text-gray-500 hover:text-gray-800 transition duration-200"
+                              className="text-neutral-400 hover:text-rose-600 transition-colors duration-300 p-2 hover:bg-rose-50 rounded-lg"
                               onClick={e => e.stopPropagation()}
                             >
                               <ExternalLink className="w-5 h-5" />
@@ -768,75 +688,100 @@ const Portfolio = () => {
       </section>
 
       {/* Tech Stack Section */}
-      <section id="skills" className="py-20 bg-gray-50">
+      <section id="skills" className="py-20 bg-white">
         <Container>
-          <h2 className="text-4xl font-bold text-center mb-4 text-gray-800 font-playfair">
-            Tech Stack
-          </h2>
-          <p className="text-center text-gray-600 mb-12 max-w-2xl mx-auto font-inter">
-            Teknologi dan tools yang saya kuasai dalam pengembangan web
-          </p>
+          <div className="text-center mb-20">
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary-100 mb-6">
+              <svg className="w-8 h-8 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+              </svg>
+            </div>
+            <h2 className="text-4xl md:text-5xl font-bold text-neutral-800 mb-6 font-playfair leading-tight">
+              Tech Stack & Skills
+            </h2>
+            <p className="text-xl text-neutral-600 max-w-2xl mx-auto font-inter font-light">
+              Teknologi dan tools yang saya kuasai dalam pengembangan web
+            </p>
+          </div>
 
-          {/* Tech Stack Overview */}
-          <div className="max-w-4xl mx-auto">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-              <div className="bg-white p-8 rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition duration-300">
-                <div className="text-2xl font-bold text-green-600 mb-3 font-playfair">Frontend</div>
-                <div className="space-y-2">
-                  <p className="text-sm text-gray-600 font-inter">React.js</p>
-                  <p className="text-sm text-gray-600 font-inter">JavaScript</p>
-                  <p className="text-sm text-gray-600 font-inter">Tailwind CSS</p>
-                  <p className="text-sm text-gray-600 font-inter">HTML CSS</p>
-                  <p className="text-sm text-gray-600 font-inter">Responsive Design</p>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
+            {/* Frontend Skills */}
+            <div className="bg-gradient-to-br from-white to-blue-50 rounded-2xl p-8 shadow-lg border border-blue-100">
+              <div className="flex items-center gap-4 mb-8">
+                <div className="w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center">
+                  <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 className="text-2xl font-bold text-neutral-800 font-playfair">Frontend Development</h3>
+                  <p className="text-neutral-600">UI/UX implementation</p>
                 </div>
               </div>
-              <div className="bg-white p-8 rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition duration-300">
-                <div className="text-2xl font-bold text-blue-600 mb-3 font-playfair">Backend</div>
-                <div className="space-y-2">
-                  <p className="text-sm text-gray-600 font-inter">PHP Laravel</p>
-                  <p className="text-sm text-gray-600 font-inter">REST API Development</p>
-                  <p className="text-sm text-gray-600 font-inter">Python</p>
-                  <p className="text-sm text-gray-600 font-inter">JavaScript</p>
-                </div>
-              </div>
-              <div className="bg-white p-8 rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition duration-300">
-                <div className="text-2xl font-bold text-purple-600 mb-3 font-playfair">UI/UX Design</div>
-                <div className="space-y-2">
-                  <p className="text-sm text-gray-600 font-inter">Figma</p>
-                  <p className="text-sm text-gray-600 font-inter">Design Systems</p>
-                  <p className="text-sm text-gray-600 font-inter">Wireframing</p>
-                  <p className="text-sm text-gray-600 font-inter">Prototyping</p>
-                  <p className="text-sm text-gray-600 font-inter">User Research</p>
-                </div>
-              </div>
-              <div className="bg-white p-8 rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition duration-300">
-                <div className="text-2xl font-bold text-orange-600 mb-3 font-playfair">Tools</div>
-                <div className="space-y-2">
-                  <p className="text-sm text-gray-600 font-inter">Git & GitHub</p>
-                  <p className="text-sm text-gray-600 font-inter">Visual Studio Code</p>
-                  <p className="text-sm text-gray-600 font-inter">Figma</p>
-                  <p className="text-sm text-gray-600 font-inter">Power BI</p>
-                  <p className="text-sm text-gray-600 font-inter">phpMyAdmin</p>
-                </div>
+              <div className="grid grid-cols-2 gap-4">
+                {['React.js', 'JavaScript', 'Tailwind CSS', 'HTML5/CSS', 'Responsive Design', 'Component Architecture', 'State Management'].map((skill) => (
+                  <div key={skill} className="flex items-center gap-3 p-3 bg-white rounded-xl border border-neutral-100 hover:border-blue-200 transition-colors duration-300">
+                    <div className="w-2 h-2 rounded-full bg-blue-500"></div>
+                    <span className="text-neutral-700 font-medium font-inter">{skill}</span>
+                  </div>
+                ))}
               </div>
             </div>
 
-            {/* Additional Skills */}
-            <div className="mt-12 bg-white rounded-xl shadow-lg border border-gray-100 p-8">
-              <h3 className="text-2xl font-bold text-center mb-6 text-gray-800 font-playfair">Additional Skills</h3>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-                <div className="p-4 bg-gray-50 rounded-lg">
-                  <p className="text-sm font-medium text-gray-700 font-inter">REST API Integration</p>
+            {/* Backend Skills */}
+            <div className="bg-gradient-to-br from-white to-emerald-50 rounded-2xl p-8 shadow-lg border border-emerald-100">
+              <div className="flex items-center gap-4 mb-8">
+                <div className="w-12 h-12 rounded-xl bg-emerald-100 flex items-center justify-center">
+                  <svg className="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01" />
+                  </svg>
                 </div>
-                <div className="p-4 bg-gray-50 rounded-lg">
-                  <p className="text-sm font-medium text-gray-700 font-inter">CRUD Implementation</p>
+                <div>
+                  <h3 className="text-2xl font-bold text-neutral-800 font-playfair">Backend Development</h3>
+                  <p className="text-neutral-600">Server-side & database management</p>
                 </div>
-                <div className="p-4 bg-gray-50 rounded-lg">
-                  <p className="text-sm font-medium text-gray-700 font-inter">UI/UX Design Systems</p>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                {['Laravel', 'PHP', 'REST APIs', 'MySQL', 'Python', 'Database Design', 'API Integration'].map((skill) => (
+                  <div key={skill} className="flex items-center gap-3 p-3 bg-white rounded-xl border border-neutral-100 hover:border-emerald-200 transition-colors duration-300">
+                    <div className="w-2 h-2 rounded-full bg-emerald-500"></div>
+                    <span className="text-neutral-700 font-medium font-inter">{skill}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Tools & Others */}
+            <div className="lg:col-span-2 bg-gradient-to-br from-white to-neutral-50 rounded-2xl p-8 shadow-lg border border-neutral-100">
+              <div className="flex items-center gap-4 mb-8">
+                <div className="w-12 h-12 rounded-xl bg-violet-100 flex items-center justify-center">
+                  <svg className="w-6 h-6 text-violet-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                  </svg>
                 </div>
-                <div className="p-4 bg-gray-50 rounded-lg">
-                  <p className="text-sm font-medium text-gray-700 font-inter">Responsive Web</p>
+                <div>
+                  <h3 className="text-2xl font-bold text-neutral-800 font-playfair">Tools & Additional Skills</h3>
+                  <p className="text-neutral-600">Development workflow & collaboration</p>
                 </div>
+              </div>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                {[
+                  { name: 'Git & GitHub', color: 'orange' },
+                  { name: 'Figma', color: 'pink' },
+                  { name: 'VS Code', color: 'blue' },
+                  { name: 'Power BI', color: 'purple' },
+                  { name: 'UI/UX Design', color: 'rose' },
+                  { name: 'Agile/Scrum', color: 'green' },
+                  { name: 'Testing/Debugging', color: 'yellow' },
+                  { name: 'Documentation', color: 'indigo' }
+                ].map((skill) => (
+                  <div key={skill.name} className="flex flex-col items-center p-6 bg-white rounded-xl border border-neutral-100 hover:border-neutral-200 transition-all duration-300 hover:shadow-md">
+                    <div className={`w-10 h-10 rounded-lg bg-${skill.color}-100 flex items-center justify-center mb-4`}>
+                      <div className={`w-4 h-4 rounded-full bg-${skill.color}-500`}></div>
+                    </div>
+                    <span className="text-neutral-700 font-semibold font-inter text-center">{skill.name}</span>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
@@ -844,50 +789,53 @@ const Portfolio = () => {
       </section>
 
       {/* About Section */}
-      <section id="about" className="py-20 bg-white">
+      <section id="about" className="py-20 bg-gradient-to-br from-neutral-50 to-white">
         <Container>
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-4xl font-bold text-center mb-12 text-gray-800 font-playfair">
-              About Me
-            </h2>
-            
-            <div className="grid md:grid-cols-2 gap-12 items-center">
-              <div>
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <div>
+              <div className="relative">
+                <div className="absolute -inset-4 bg-gradient-to-r from-primary-400 to-primary-600 rounded-3xl blur-2xl opacity-20"></div>
                 <img 
                   src="/assets/profile.jpeg"
-                  alt="Profile"
-                  className="rounded-2xl shadow-lg w-full"
+                  alt="Josephine Antonia"
+                  className="relative rounded-2xl shadow-2xl w-full"
                 />
               </div>
+            </div>
+            
+            <div>
+              <div className="inline-flex items-center gap-3 mb-8">
+                <div className="w-12 h-0.5 bg-primary-600"></div>
+                <span className="text-primary-600 font-semibold font-inter tracking-wider">TENTANG SAYA</span>
+              </div>
+              <h2 className="text-4xl font-bold text-neutral-800 mb-8 font-playfair leading-tight">
+                Full-Stack Developer dengan Passion untuk Inovasi Digital
+              </h2>
               
-              <div>
-                <h3 className="text-2xl font-bold text-gray-800 mb-4 font-playfair">
-                  Fullstack Web Developer & UI/UX Designer
-                </h3>
-                <p className="text-gray-600 mb-6 leading-relaxed font-inter">
-                  Saya adalah mahasiswa dengan minat kuat pada pengembangan aplikasi web fullstack dan desain UI/UX. Melalui berbagai proyek yang dikerjakan pada perkuliahan, saya mengembangkan kemampuan pada sisi frontend, backend, serta pengelolaan database dan desain sistem.
-                </p>
-                <p className="text-gray-600 mb-6 leading-relaxed font-inter">
-                  Proyek-proyek tersebut mencerminkan progres pembelajaran yang bertahap, mulai dari penguasaan konsep dasar hingga implementasi aplikasi dengan fitur yang lebih kompleks, terstruktur, dan sesuai kebutuhan pengguna. Saya percaya bahwa kombinasi technical skills dan design thinking menghasilkan produk digital yang optimal.
+              <div className="space-y-6">
+                <p className="text-lg text-neutral-600 leading-relaxed font-inter">
+                  Sebagai seorang Full-Stack Developer, saya mengembangkan aplikasi web secara menyeluruh, mulai dari perancangan antarmuka hingga pengelolaan logika backend dan database. Saya mengutamakan kualitas kode, struktur sistem yang rapi, serta pengalaman pengguna yang intuitif agar solusi yang dibangun tidak hanya berfungsi dengan baik, tetapi juga nyaman digunakan.
                 </p>
                 
-                <div className="space-y-3">
-                  <div className="flex items-center">
-                    <CheckCircle className="w-5 h-5 text-green-500 mr-3" />
-                    <span className="text-gray-700 font-inter">Communication</span>
-                  </div>
-                  <div className="flex items-center">
-                    <CheckCircle className="w-5 h-5 text-green-500 mr-3" />
-                    <span className="text-gray-700 font-inter">Team Collaboration</span>
-                  </div>
-                  <div className="flex items-center">
-                    <CheckCircle className="w-5 h-5 text-green-500 mr-3" />
-                    <span className="text-gray-700 font-inter">Time Management</span>
-                  </div>
-                  <div className="flex items-center">
-                    <CheckCircle className="w-5 h-5 text-green-500 mr-3" />
-                    <span className="text-gray-700 font-inter">Design System Development</span>
-                  </div>
+                <p className="text-lg text-neutral-600 leading-relaxed font-inter">
+                  Perjalanan saya di dunia pengembangan web dimulai dari mempelajari dasar-dasar pemrograman, kemudian berkembang melalui berbagai proyek akademik dan studi kasus nyata. Melalui proses tersebut, saya terbiasa membangun sistem dengan arsitektur modern, menerapkan best practices, serta bekerja secara terstruktur. Setiap proyek menjadi sarana bagi saya untuk terus belajar, meningkatkan kualitas teknis, dan menghasilkan solusi digital yang relevan serta berkelanjutan.
+                </p>
+                
+                <div className="grid grid-cols-2 gap-6 pt-8">
+                  {[
+                    { icon: '💬', title: 'Komunikasi', desc: 'Komunikasi yang jelas dan efektif' },
+                    { icon: '🤝', title: 'Kerja Tim', desc: 'Kolaborasi aktif dalam tim' },
+                    { icon: '⏱️', title: 'Manajemen Waktu', desc: 'Mampu mengatur prioritas dan deadline' },
+                    { icon: '🎨', title: 'Pemecahan Masalah', desc: 'Pendekatan pemecahan masalah' }
+                  ].map((skill) => (
+                    <div key={skill.title} className="flex items-start gap-4 p-4 bg-white rounded-xl border border-neutral-100 hover:border-primary-200 transition-colors duration-300">
+                      <div className="text-2xl">{skill.icon}</div>
+                      <div>
+                        <h4 className="font-semibold text-neutral-800 font-inter mb-1">{skill.title}</h4>
+                        <p className="text-sm text-neutral-600">{skill.desc}</p>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
@@ -896,29 +844,38 @@ const Portfolio = () => {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="py-20 bg-gray-50">
-        <Container>
-          <h2 className="text-4xl font-bold text-center mb-4 text-gray-800 font-playfair">
-            Let's Connect!
-          </h2>
-          <p className="text-center text-gray-600 mb-12 max-w-2xl mx-auto font-inter">
-            Mari terhubung dan berkolaborasi dalam project menarik
-          </p>
+      <section id="contact" className="py-20 bg-gradient-to-br from-primary-900 to-primary-800">
+        <Container size="small">
+          <div className="text-center mb-16">
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary-600 mb-6 shadow-md">
+              <Mail className="w-8 h-8 text-black" />
+            </div>
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 font-playfair leading-tight text-black">
+              Let's Build Something Amazing
+            </h2>
+            
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto font-inter font-light">
+              Tertarik berkolaborasi atau punya proyek menarik? Mari terhubung!
+            </p>
+          </div>
 
           <div className="max-w-2xl mx-auto">
-            <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
-              <h3 className="text-2xl font-bold text-center mb-8 text-gray-800 font-playfair">
-                Get In Touch
-              </h3>
-              
-              <div className="space-y-6">
+            {/* Kartu tetap putih solid agar semua isi teks hitam terlihat jelas */}
+            <div className="bg-white rounded-2xl p-8 border border-gray-200 shadow-xl">
+              <div className="space-y-8">
                 {/* Email */}
                 <a 
                   href="mailto:joseephineez@gmail.com"
-                  className="flex items-center justify-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition duration-200 group"
+                  className="flex items-center p-6 bg-gray-50 rounded-xl hover:bg-gray-100 transition-all duration-300 group border border-transparent hover:border-gray-200"
                 >
-                  <Mail className="w-6 h-6 text-gray-600 mr-4 group-hover:text-gray-800" />
-                  <span className="text-gray-700 font-inter group-hover:text-gray-900">joseephineez@gmail.com</span>
+                  <div className="w-12 h-12 rounded-lg bg-white shadow-sm flex items-center justify-center mr-6 group-hover:scale-110 transition-transform duration-300">
+                    <Mail className="w-6 h-6 text-black" />
+                  </div>
+                  <div className="flex-1">
+                    <div className="font-semibold text-lg font-inter text-black">Email</div>
+                    <div className="text-gray-600 font-inter">joseephineez@gmail.com</div>
+                  </div>
+                  <ExternalLink className="w-5 h-5 text-gray-400 group-hover:text-black transition-colors duration-300" />
                 </a>
 
                 {/* LinkedIn */}
@@ -926,11 +883,16 @@ const Portfolio = () => {
                   href="https://www.linkedin.com/in/josephine-antonia-01277038a/" 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition duration-200 group"
+                  className="flex items-center p-6 bg-gray-50 rounded-xl hover:bg-gray-100 transition-all duration-300 group border border-transparent hover:border-gray-200"
                 >
-                  <Linkedin className="w-6 h-6 text-gray-600 mr-4 group-hover:text-blue-600" />
-                  <span className="text-gray-700 font-inter group-hover:text-gray-900">LinkedIn Profile</span>
-                  <ExternalLink className="w-4 h-4 ml-2 text-gray-400 group-hover:text-gray-600" />
+                  <div className="w-12 h-12 rounded-lg bg-white shadow-sm flex items-center justify-center mr-6 group-hover:scale-110 transition-transform duration-300">
+                    <Linkedin className="w-6 h-6 text-black" />
+                  </div>
+                  <div className="flex-1">
+                    <div className="font-semibold text-lg font-inter text-black">LinkedIn</div>
+                    <div className="text-gray-600 font-inter">Josephine Antonia</div>
+                  </div>
+                  <ExternalLink className="w-5 h-5 text-gray-400 group-hover:text-black transition-colors duration-300" />
                 </a>
 
                 {/* GitHub */}
@@ -938,12 +900,23 @@ const Portfolio = () => {
                   href="https://github.com/Josephinnnes" 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition duration-200 group"
+                  className="flex items-center p-6 bg-gray-50 rounded-xl hover:bg-gray-100 transition-all duration-300 group border border-transparent hover:border-gray-200"
                 >
-                  <Github className="w-6 h-6 text-gray-600 mr-4 group-hover:text-gray-800" />
-                  <span className="text-gray-700 font-inter group-hover:text-gray-900">GitHub Profile</span>
-                  <ExternalLink className="w-4 h-4 ml-2 text-gray-400 group-hover:text-gray-600" />
+                  <div className="w-12 h-12 rounded-lg bg-white shadow-sm flex items-center justify-center mr-6 group-hover:scale-110 transition-transform duration-300">
+                    <Github className="w-6 h-6 text-black" />
+                  </div>
+                  <div className="flex-1">
+                    <div className="font-semibold text-lg font-inter text-black">GitHub</div>
+                    <div className="text-gray-600 font-inter">@Josephinnnes</div>
+                  </div>
+                  <ExternalLink className="w-5 h-5 text-gray-400 group-hover:text-black transition-colors duration-300" />
                 </a>
+              </div>
+
+              <div className="mt-12 pt-8 border-t border-gray-100">
+                <p className="text-center text-gray-500 font-inter">
+                  Responsif dalam 24 jam untuk diskusi proyek atau peluang kolaborasi
+                </p>
               </div>
             </div>
           </div>
@@ -951,14 +924,52 @@ const Portfolio = () => {
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-800 text-gray-300 py-8">
+      <footer className="bg-neutral-900 text-neutral-300 py-12">
         <Container>
           <div className="text-center">
-            <p className="font-inter">&copy; {new Date().getFullYear()} My Portfolio. All rights reserved.</p>
-            <p className="mt-2 text-sm font-inter">Built with React and Tailwind CSS</p>
+            <div className="text-2xl font-bold text-white font-playfair mb-4">
+              Josephine Antonia
+            </div>
+            <p className="font-inter mb-8 max-w-md mx-auto">
+              Full-Stack Developer yang passionate tentang menciptakan pengalaman digital yang meaningful dan impactful.
+            </p>
+            <div className="flex justify-center gap-6 mb-8">
+              <a href="mailto:joseephineez@gmail.com" className="text-neutral-400 hover:text-white transition-colors duration-300">
+                <Mail className="w-5 h-5" />
+              </a>
+              <a href="https://linkedin.com/in/josephine-antonia-01277038a/" className="text-neutral-400 hover:text-white transition-colors duration-300">
+                <Linkedin className="w-5 h-5" />
+              </a>
+              <a href="https://github.com/Josephinnnes" className="text-neutral-400 hover:text-white transition-colors duration-300">
+                <Github className="w-5 h-5" />
+              </a>
+            </div>
+            <p className="font-inter text-sm text-neutral-500">
+              &copy; {new Date().getFullYear()} Josephine Antonia. All rights reserved.
+            </p>
+            <p className="font-inter text-sm text-neutral-500 mt-2">
+              Built with React.js, Tailwind CSS, and ❤️
+            </p>
           </div>
         </Container>
       </footer>
+
+      {/* Back to Top Button - DIPERBAIKI */}
+      <button
+  onClick={() => {
+    // Mencoba scroll window
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    
+    // Cadangan: Jika window gagal, paksa elemen dokumen paling atas
+    document.documentElement.scrollTo({ top: 0, behavior: 'smooth' });
+    document.body.scrollTo({ top: 0, behavior: 'smooth' });
+  }}
+  className="fixed bottom-8 right-8 w-14 h-14 bg-white text-black border-2 border-gray-300 rounded-full shadow-2xl hover:border-black transition-all duration-300 hover:-translate-y-2 z-[9999] flex items-center justify-center group"
+>
+  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+  </svg>
+</button>
 
       {/* Project Modal */}
       <ProjectModal 
@@ -966,6 +977,23 @@ const Portfolio = () => {
         onClose={() => setIsModalOpen(false)}
         project={selectedProject}
       />
+
+      {/* Custom CSS untuk animasi */}
+      <style jsx>{`
+        @keyframes slideDown {
+          from {
+            opacity: 0;
+            transform: translateY(-10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        .animate-slideDown {
+          animation: slideDown 0.3s ease-out;
+        }
+      `}</style>
     </div>
   );
 };
