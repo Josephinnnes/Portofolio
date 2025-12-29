@@ -65,6 +65,16 @@ const CodeIcon = (props) => (
   </svg>
 );
 
+const Palette = (props) => (
+  <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="13.5" cy="6.5" r=".5" fill="currentColor" />
+    <circle cx="17.5" cy="10.5" r=".5" fill="currentColor" />
+    <circle cx="8.5" cy="7.5" r=".5" fill="currentColor" />
+    <circle cx="6.5" cy="12.5" r=".5" fill="currentColor" />
+    <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z" />
+  </svg>
+);
+
 // --- Komponen Project Modal ---
 const ProjectModal = ({ isOpen, onClose, project }) => {
   if (!isOpen || !project) return null;
@@ -102,7 +112,12 @@ const ProjectModal = ({ isOpen, onClose, project }) => {
           </div>
 
           <h2 className="text-3xl font-bold text-gray-800 mb-4 font-playfair">{project.title}</h2>
-          <p className="text-gray-600 mb-6 leading-relaxed font-inter">{project.fullDescription}</p>
+          <p
+  className="text-gray-600 mb-6 leading-relaxed font-inter"
+  style={{ whiteSpace: "pre-line" }}
+>
+  {project.fullDescription}
+</p>
           
           <div className="mb-6">
             <h3 className="text-lg font-semibold text-gray-800 mb-3 font-inter">Teknologi yang Digunakan</h3>
@@ -162,6 +177,17 @@ const ProjectModal = ({ isOpen, onClose, project }) => {
                 Source Code
               </a>
             )}
+            {project.figmaLink && (
+              <a 
+                href={project.figmaLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition duration-200 font-inter"
+              >
+                <Palette className="w-4 h-4 mr-2" />
+                Figma Design
+              </a>
+            )}
           </div>
         </div>
       </div>
@@ -191,8 +217,8 @@ const Portfolio = () => {
         description: "Sistem berbasis web yang dirancang untuk mempermudah mahasiswa dalam memantau dan menyelesaikan tanggungan administratif seperti tugas akhir, kompen, pembayaran UKT, peminjaman buku, SKKM, dan TOEIC.",
         image: "/assets/BebasTanggungan.png",
         semester: "Semester 3", 
-        type: "Full Stack",
-        technologies: ["PHP Native"],
+        type: "Full Stack Application",
+        technologies: ["PHP"],
         features: [
           "Mengunggah Tugas Akhir (TA)",
           "Bebas Kompen",
@@ -200,8 +226,15 @@ const Portfolio = () => {
           "Bebas Peminjaman Buku Perpustakaan",
           "SKKM (Satuan Kredit Kegiatan Mahasiswa)",
         ],
-        fullDescription: "Aplikasi manajemen tanggungan mahasiswa berbasis web yang dikembangkan untuk mendukung digitalisasi proses administrasi di lingkungan kampus. Dalam proses akademik, mahasiswa memiliki berbagai kewajiban administratif yang harus dipenuhi, seperti pelunasan biaya UKT, pengembalian buku perpustakaan, penyelesaian tugas akhir, pengumpulan poin SKKM, serta pencapaian skor TOEIC. Sistem ini hadir sebagai solusi dengan menyediakan platform yang mudah diakses secara online, baik oleh mahasiswa maupun pihak administrasi. Mahasiswa dapat melihat status tanggungan secara real-time, mengunggah dokumen yang dibutuhkan, serta mendapatkan notifikasi otomatis terkait verifikasi data. Pihak admin dari berbagai unit seperti akademik, keuangan, dan perpustakaan dapat memverifikasi tanggungan secara langsung melalui dashboard admin yang sudah disediakan.",
-        challenges: "Integrasi frontend React dengan backend Express.js. Implementasi Chart.js untuk data visualization. Database design untuk relational data keluarga.",
+        fullDescription: `Aplikasi manajemen tanggungan mahasiswa berbasis web yang dikembangkan untuk mendukung digitalisasi proses administrasi di lingkungan kampus. 
+        
+        Dalam proses akademik, mahasiswa memiliki berbagai kewajiban administratif yang harus dipenuhi, seperti pelunasan biaya UKT, pengembalian buku perpustakaan, penyelesaian tugas akhir, pengumpulan poin SKKM, serta pencapaian skor TOEIC. 
+        
+        Sistem ini hadir sebagai solusi dengan menyediakan platform yang mudah diakses secara online, baik oleh mahasiswa maupun pihak administrasi. Mahasiswa dapat melihat status tanggungan secara real-time, mengunggah dokumen yang dibutuhkan, serta mendapatkan notifikasi otomatis terkait verifikasi data. 
+        
+        Pihak admin dari berbagai unit seperti akademik, keuangan, dan perpustakaan dapat memverifikasi tanggungan secara langsung melalui dashboard admin yang sudah disediakan.
+        
+        Pada proyek ini, saya terlibat dalam pengembangan full stack serta implementasi fitur berbasis web sesuai kebutuhan sistem. Proyek dikerjakan secara kolaboratif dalam tim. Melalui proyek ini, saya memperoleh pengalaman dalam membangun sistem administrasi kampus yang berorientasi pada efisiensi dan kemudahan pengguna.`,
         githubLink: "https://github.com/hifnazwa/PBL-Sistem-Tanggungan.git",
         demoLink: "/assets/Bebas Tanggungan.mp4"
       }
@@ -210,11 +243,11 @@ const Portfolio = () => {
       {
         id: 2,
         title: "TOEICLY",
-        description: "TOEICLY adalah sistem manajemen ujian TOEIC berbasis web yang mempermudah proses pendaftaran, verifikasi, penjadwalan, hingga pengumuman hasil ujian di Politeknik Negeri Malang. Sistem ini menggantikan proses manual menjadi digital, sehingga lebih cepat, efisien, dan transparan bagi mahasiswa serta admin.",
+        description: "TOEICLY merupakan sistem informasi berbasis web yang dikembangkan untuk mendukung proses pendaftaran, pengelolaan jadwal, dan pengumuman hasil ujian TOEIC di lingkungan kampus. Sistem ini dirancang untuk mempermudah mahasiswa dan admin dalam mengelola seluruh proses ujian secara terintegrasi.",
         image: "/assets/Toeic.png",
         semester: "Semester 4",
         type: "Full Stack Application",
-        technologies: ["Laravel", "Bootstrap"],
+        technologies: ["Laravel", "Bootstrap", "Database"],
         features: [
           "Pendaftaran Online Mahasiswa",
           "Verifikasi Data oleh Admin Jurusan",
@@ -225,8 +258,13 @@ const Portfolio = () => {
           "Dashboard Admin & Mahasiswa",
           "Notifikasi & Pelaporan"
         ],
-        fullDescription: "TOEICLY merupakan sistem berbasis web yang dirancang untuk mengelola seluruh proses ujian TOEIC secara terintegrasi. Mahasiswa dapat mendaftar ujian secara online, mengunggah dokumen seperti KTP dan KTM, serta melihat jadwal dan hasil ujian langsung melalui dashboard. Admin jurusan bertugas memverifikasi data peserta, sementara admin UPA TOEIC mengelola jadwal, hasil, dan sertifikat TOEIC. Dengan antarmuka modern menggunakan Laravel dan Tailwind CSS, TOEICLY membantu meningkatkan efisiensi, akurasi, dan transparansi proses ujian TOEIC di lingkungan kampus.",
-        challenges: "Membangun RESTful API yang robust untuk handling complex quiz logic. Implementasi JWT untuk secure authentication. Database design untuk educational content dan user progress tracking.",
+        fullDescription: `Proyek ini berupa sistem manajemen ujian TOEIC berbasis web yang bertujuan untuk menggantikan proses manual menjadi sistem yang lebih terstruktur, efisien, dan mudah diakses oleh mahasiswa maupun pihak administrasi.
+        
+        Pada sistem ini, mahasiswa dapat melakukan pendaftaran ujian TOEIC secara online, mengunggah dokumen pendukung, melihat jadwal ujian, serta mengakses informasi hasil ujian dan sertifikat. Sementara itu, admin memiliki fitur untuk mengelola data peserta, jadwal ujian, hasil ujian, serta manajemen pengguna.
+        
+        Proyek ini dikerjakan secara tim dengan pembagian peran yang jelas, dan dikembangkan menggunakan pendekatan pengembangan sistem yang terstruktur. Saya terlibat dalam proses perancangan antarmuka (UI),pengembangan fitur frontend, database mysql, serta penyusunan dokumentasi sistem seperti SKPL (Spesifikasi Kebutuhan Perangkat Lunak).
+        
+        Melalui proyek TOEICLY, saya memperoleh pengalaman nyata dalam membangun sistem informasi berbasis web yang sesuai dengan kebutuhan pengguna, meningkatkan kemampuan kerja tim, serta memahami alur pengembangan sistem dari tahap analisis hingga implementasi.`,
         githubLink: "https://github.com/SuryaRf/TOEICLY.git",
         demoLink: "/assets/TOEIC.mp4"
       }
@@ -234,11 +272,11 @@ const Portfolio = () => {
     semester5: [
       {
         id: 3,
-        title: "K3",
-        description: "Sistem manajemen Keselamatan dan Kesehatan Kerja (K3) untuk perusahaan",
+        title: "Website Manajemen Keselamatan dan Kesehatan Kerja (K3)",
+        description: "Website sistem informasi Kesehatan dan Keselamatan Kerja (K3) yang dikembangkan sebagai proyek perkuliahan untuk mendukung pencatatan, pemantauan, dan pengelolaan data K3 di lingkungan perusahaan manufaktur.",
         image: "/assets/K3.png",
         semester: "Semester 5",
-        type: "Frontend Focus",
+        type: "Full Stack Application",
         technologies: ["React"],
         features: [
           "Dashboard interaktif untuk monitoring K3",
@@ -248,13 +286,45 @@ const Portfolio = () => {
           "Prosedur tanggap darurat interaktif",
           "Responsive design untuk semua device"
         ],
-        fullDescription: "Aplikasi web comprehensive untuk mengelola program Keselamatan dan Kesehatan Kerja di perusahaan. Dibangun dengan React dan Tailwind CSS, sistem ini menyediakan berbagai modul penting termasuk pelaporan, edukasi, dan monitoring compliance K3. Interface yang user-friendly memudahkan karyawan untuk berpartisipasi aktif dalam program keselamatan.",
-        challenges: "Membuat complex modal system yang reusable dan responsive. Mengimplementasikan file upload untuk laporan pelanggaran dengan validation. Design system yang konsisten across semua components.",
+        fullDescription: `Sistem Informasi Kesehatan dan Keselamatan Kerja (K3) PT. Siantar Top merupakan proyek tugas perkuliahan yang dikembangkan sebagai studi kasus penerapan sistem informasi pada perusahaan manufaktur. Proyek ini bertujuan untuk membantu perusahaan dalam mengelola aspek K3 secara lebih terstruktur dan terdokumentasi dengan baik.
+        
+        Pada proyek ini, sistem dirancang untuk mendukung proses pencatatan data potensi bahaya, pengelolaan risiko kerja, pelaporan insiden, serta pemantauan penerapan prosedur K3 di lingkungan kerja. Pengembangan sistem dilakukan secara tim dengan pembagian tugas yang jelas, mulai dari analisis kebutuhan, perancangan sistem, hingga implementasi antarmuka dan fitur.
+        
+        Saya berkontribusi dalam perancangan antarmuka pengguna (UI), pengembangan fitur berbasis web, serta penyusunan dokumentasi sistem. Proyek ini memberikan pengalaman berharga dalam memahami alur sistem K3, kebutuhan pengguna di lingkungan industri, serta penerapan konsep sistem informasi untuk mendukung keselamatan dan kesehatan kerja.
+        
+        Melalui proyek ini, saya semakin terbiasa bekerja secara terstruktur, memahami kebutuhan bisnis, dan mengembangkan sistem yang berorientasi pada keamanan, kenyamanan, dan kepatuhan prosedur kerja.`,
         githubLink: "https://github.com/farelmaryamlailahajiri/K3.git",
         demoLink: "/assets/K3.mp4"
       }
     ]
   };
+
+  // Data untuk Projek Test Case
+  const testCaseProjects = [
+    {
+      id: 4,
+      title: "Website Pembelian Paket Internet (Frontend Project)",
+      description: "Website pembelian paket internet yang dikembangkan sebagai project frontend menggunakan React. Fokus pada tampilan UI, pengelolaan data paket menggunakan JSON, serta interaksi pengguna yang sederhana dan responsif.",
+      image: "/assets/Website Tes Intern PT. DWP.png",
+      semester: "Case Study Intern – PT. Dutakom Wibawa Putra",
+      type: "Frontend Focus",
+      technologies: ["React.js", "ant design", "mock server API", "db.json"],
+      features: [
+        "Pemilihan paket internet dengan berbagai pilihan kuota, masa aktif, dan harga",
+        "Pemilihan metode pembayaran (Bank Transfer, E-Wallet, Pulsa, dan lain-lain)",
+        "Simulasi proses pembelian paket internet secara frontend",
+        "Penerapan kode promo untuk mendapatkan potongan harga saat pembelian",
+        "Notifikasi status transaksi (berhasil, promo diterapkan, dll)",
+        "Manajemen data pengguna (edit data user)"
+      ],
+      fullDescription: `Website ini merupakan tugas tes magang dari PT. Dutakom Wibawa Putra (DWP Group) yang dikerjakan sebagai bagian dari proses seleksi magang. Proyek ini diselesaikan dalam waktu 2 hari, dengan fokus utama pada frontend sesuai dengan posisi yang saya lamar.
+      
+      Pada proyek ini, saya membangun website pembelian paket internet menggunakan React.js, dengan pendekatan component-based dan pengelolaan state menggunakan React Hooks. Data paket internet disimulasikan menggunakan JSON (db.json) sebagai mock API untuk menampilkan daftar paket, harga, dan informasi detail lainnya.
+      
+      Proyek ini berhasil membawa saya melanjutkan ke tahap interview di PT. Dutakom Wibawa Putra, dan menjadi pengalaman berharga dalam mengerjakan studi kasus nyata dengan batas waktu yang ketat. Melalui proyek ini, saya semakin terbiasa mengembangkan aplikasi frontend secara mandiri, terstruktur, dan sesuai kebutuhan pengguna.`,
+      demoLink: "/assets/Website Tes Intern PT. DWP.mp4"
+    }
+  ];
 
   const handleProjectClick = (project) => {
     setSelectedProject(project);
@@ -327,8 +397,8 @@ const Portfolio = () => {
             
             {/* Title */}
             <p className="text-xl md:text-2xl text-gray-600 mb-8 leading-relaxed font-inter max-w-2xl mx-auto">
-            Frontend enthusiast,
-            berkomitmen untuk terus mengasah skill dalam menciptakan pengalaman web yang impactful
+              Full-Stack Developer dengan minat pada pengembangan aplikasi web end-to-end, mulai dari frontend, backend, hingga pengelolaan database.
+              Aktif mengembangkan aplikasi web melalui berbagai proyek akademik dan studi kasus, serta terus meningkatkan kemampuan teknis.
             </p>
             
             {/* Buttons */}
@@ -446,7 +516,7 @@ const Portfolio = () => {
               Semester 4
             </h3>
             <p className="text-gray-600 mb-8 max-w-3xl font-inter">
-              Project semester 4 menantang kemampuan full-stack development dengan complex features dan database design.
+              Project semester 4 kemampuan full-stack development dan database design.
             </p>
             <div className="grid grid-cols-1 gap-8">
               {projects.semester4.map(project => (
@@ -521,12 +591,12 @@ const Portfolio = () => {
           </div>
 
           {/* Semester 5 Projects */}
-          <div>
+          <div className="mb-16">
             <h3 className="text-2xl font-bold text-gray-800 mb-8 border-l-4 border-purple-500 pl-4 font-playfair">
               Semester 5 
             </h3>
             <p className="text-gray-600 mb-8 max-w-3xl font-inter">
-              Project semester 5 menunjukkan kemampuan advanced dalam component architecture dan complex frontend systems.
+              Project K3 semester 5 yang dikembangkan menggunakan React.js.
             </p>
             <div className="grid grid-cols-1 gap-8">
               {projects.semester5.map(project => (
@@ -571,15 +641,110 @@ const Portfolio = () => {
                           Explore Project <CodeIcon className="w-4 h-4 ml-1" />
                         </button>
                         <div className="flex gap-3">
-                          <a 
-                            href={project.githubLink}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-gray-500 hover:text-gray-700 transition duration-200"
-                            onClick={e => e.stopPropagation()}
+                          {project.githubLink && (
+                            <a 
+                              href={project.githubLink}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-gray-500 hover:text-gray-700 transition duration-200"
+                              onClick={e => e.stopPropagation()}
+                            >
+                              <Github className="w-5 h-5" />
+                            </a>
+                          )}
+                          {project.demoLink && (
+                            <a 
+                              href={project.demoLink}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-gray-500 hover:text-gray-800 transition duration-200"
+                              onClick={e => e.stopPropagation()}
+                            >
+                              <ExternalLink className="w-5 h-5" />
+                            </a>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Projek Test Case Section */}
+          <div className="mt-16 pt-8">
+            <h3 className="text-2xl font-bold text-gray-800 mb-8 border-l-4 border-pink-500 pl-4 font-playfair">
+              Web Application Case Study – PT. Dutakom Wibawa Putra
+            </h3>
+            <p className="text-gray-600 mb-8 max-w-3xl font-inter">
+              Website frontend yang dikembangkan menggunakan React.js dengan data dari JSON Server (db.json). Project ini berfokus pada pembuatan antarmuka yang responsif, dan penerapan konsep dasar frontend development seperti component, state, dan data fetching.
+            </p>
+            <div className="grid grid-cols-1 gap-8">
+              {testCaseProjects.map(project => (
+                <div 
+                  key={project.id}
+                  className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition duration-300 cursor-pointer transform hover:-translate-y-1 border border-gray-100"
+                  onClick={() => handleProjectClick(project)}
+                >
+                  <div className="md:flex">
+                    <div className="md:w-2/5">
+                      <img 
+                        src={project.image} 
+                        alt={project.title}
+                        className="w-full h-64 md:h-full object-cover"
+                      />
+                    </div>
+                    <div className="md:w-3/5 p-6">
+                      <div className="flex items-center gap-2 mb-3">
+                        <span className="text-sm font-medium text-pink-600 bg-pink-100 px-2 py-1 rounded font-inter">
+                          {project.semester}
+                        </span>
+                        <span className="text-sm text-gray-500 font-inter">{project.type}</span>
+                      </div>
+                      <h4 className="text-2xl font-semibold text-gray-800 mb-3 font-playfair">
+                        {project.title}
+                      </h4>
+                      <p className="text-gray-600 mb-4 font-inter">
+                        {project.description}
+                      </p>
+                      <div className="flex flex-wrap gap-2 mb-4">
+                        {project.technologies.map((tech, index) => (
+                          <span 
+                            key={index}
+                            className="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded font-inter"
                           >
-                            <Github className="w-5 h-5" />
-                          </a>
+                            {tech}
+                          </span>
+                        ))}
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <button className="text-gray-800 font-medium hover:text-gray-900 transition duration-200 flex items-center font-inter">
+                          Explore Project <CodeIcon className="w-4 h-4 ml-1" />
+                        </button>
+                        <div className="flex gap-3">
+                          {project.githubLink && (
+                            <a 
+                              href={project.githubLink}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-gray-500 hover:text-gray-700 transition duration-200"
+                              onClick={e => e.stopPropagation()}
+                            >
+                              <Github className="w-5 h-5" />
+                            </a>
+                          )}
+                          {project.figmaLink && (
+                            <a 
+                              href={project.figmaLink}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-gray-500 hover:text-pink-600 transition duration-200"
+                              onClick={e => e.stopPropagation()}
+                            >
+                              <Palette className="w-5 h-5" />
+                            </a>
+                          )}
                           {project.demoLink && (
                             <a 
                               href={project.demoLink}
@@ -621,28 +786,37 @@ const Portfolio = () => {
                   <p className="text-sm text-gray-600 font-inter">React.js</p>
                   <p className="text-sm text-gray-600 font-inter">JavaScript</p>
                   <p className="text-sm text-gray-600 font-inter">Tailwind CSS</p>
-                  <p className="text-sm text-gray-600 font-inter">HTML/CSS</p>
+                  <p className="text-sm text-gray-600 font-inter">HTML CSS</p>
+                  <p className="text-sm text-gray-600 font-inter">Responsive Design</p>
                 </div>
               </div>
               <div className="bg-white p-8 rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition duration-300">
                 <div className="text-2xl font-bold text-blue-600 mb-3 font-playfair">Backend</div>
                 <div className="space-y-2">
-                  <p className="text-sm text-gray-600 font-inter">SQL</p>
-                  <p className="text-sm text-gray-600 font-inter">REST API</p>
+                  <p className="text-sm text-gray-600 font-inter">PHP Laravel</p>
+                  <p className="text-sm text-gray-600 font-inter">REST API Development</p>
+                  <p className="text-sm text-gray-600 font-inter">Python</p>
+                  <p className="text-sm text-gray-600 font-inter">JavaScript</p>
                 </div>
               </div>
               <div className="bg-white p-8 rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition duration-300">
-                <div className="text-2xl font-bold text-purple-600 mb-3 font-playfair">Database</div>
+                <div className="text-2xl font-bold text-purple-600 mb-3 font-playfair">UI/UX Design</div>
                 <div className="space-y-2">
-                  <p className="text-sm text-gray-600 font-inter">MySQL</p>
+                  <p className="text-sm text-gray-600 font-inter">Figma</p>
+                  <p className="text-sm text-gray-600 font-inter">Design Systems</p>
+                  <p className="text-sm text-gray-600 font-inter">Wireframing</p>
+                  <p className="text-sm text-gray-600 font-inter">Prototyping</p>
+                  <p className="text-sm text-gray-600 font-inter">User Research</p>
                 </div>
               </div>
               <div className="bg-white p-8 rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition duration-300">
                 <div className="text-2xl font-bold text-orange-600 mb-3 font-playfair">Tools</div>
                 <div className="space-y-2">
                   <p className="text-sm text-gray-600 font-inter">Git & GitHub</p>
-                  <p className="text-sm text-gray-600 font-inter">VS Code</p>
+                  <p className="text-sm text-gray-600 font-inter">Visual Studio Code</p>
                   <p className="text-sm text-gray-600 font-inter">Figma</p>
+                  <p className="text-sm text-gray-600 font-inter">Power BI</p>
+                  <p className="text-sm text-gray-600 font-inter">phpMyAdmin</p>
                 </div>
               </div>
             </div>
@@ -652,16 +826,16 @@ const Portfolio = () => {
               <h3 className="text-2xl font-bold text-center mb-6 text-gray-800 font-playfair">Additional Skills</h3>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
                 <div className="p-4 bg-gray-50 rounded-lg">
-                  <p className="text-sm font-medium text-gray-700 font-inter">Development Skills</p>
+                  <p className="text-sm font-medium text-gray-700 font-inter">REST API Integration</p>
                 </div>
                 <div className="p-4 bg-gray-50 rounded-lg">
-                  <p className="text-sm font-medium text-gray-700 font-inter">Responsive Design</p>
+                  <p className="text-sm font-medium text-gray-700 font-inter">CRUD Implementation</p>
                 </div>
                 <div className="p-4 bg-gray-50 rounded-lg">
-                  <p className="text-sm font-medium text-gray-700 font-inter">UI/UX</p>
+                  <p className="text-sm font-medium text-gray-700 font-inter">UI/UX Design Systems</p>
                 </div>
                 <div className="p-4 bg-gray-50 rounded-lg">
-                  <p className="text-sm font-medium text-gray-700 font-inter">Problem Solving</p>
+                  <p className="text-sm font-medium text-gray-700 font-inter">Responsive Web</p>
                 </div>
               </div>
             </div>
@@ -688,22 +862,17 @@ const Portfolio = () => {
               
               <div>
                 <h3 className="text-2xl font-bold text-gray-800 mb-4 font-playfair">
-                  Passionate Web Developer
+                  Fullstack Web Developer & UI/UX Designer
                 </h3>
                 <p className="text-gray-600 mb-6 leading-relaxed font-inter">
-                  Saya adalah mahasiswa yang antusias dalam pengembangan web full-stack. 
-                  Melalui project-project yang telah dikembangkan dari semester 3 hingga 5, 
-                  saya terus mengasah kemampuan dalam backend development, 
-                  dan database management.
+                  Saya adalah mahasiswa dengan minat kuat pada pengembangan aplikasi web fullstack dan desain UI/UX. Melalui berbagai proyek yang dikerjakan pada perkuliahan, saya mengembangkan kemampuan pada sisi frontend, backend, serta pengelolaan database dan desain sistem.
                 </p>
                 <p className="text-gray-600 mb-6 leading-relaxed font-inter">
-                  Project-project 
-                  saya menunjukkan progression yang jelas dari foundational skills hingga 
-                  advanced applications dengan complex features.
+                  Proyek-proyek tersebut mencerminkan progres pembelajaran yang bertahap, mulai dari penguasaan konsep dasar hingga implementasi aplikasi dengan fitur yang lebih kompleks, terstruktur, dan sesuai kebutuhan pengguna. Saya percaya bahwa kombinasi technical skills dan design thinking menghasilkan produk digital yang optimal.
                 </p>
                 
                 <div className="space-y-3">
-                 <div className="flex items-center">
+                  <div className="flex items-center">
                     <CheckCircle className="w-5 h-5 text-green-500 mr-3" />
                     <span className="text-gray-700 font-inter">Communication</span>
                   </div>
@@ -711,13 +880,13 @@ const Portfolio = () => {
                     <CheckCircle className="w-5 h-5 text-green-500 mr-3" />
                     <span className="text-gray-700 font-inter">Team Collaboration</span>
                   </div>
-                 <div className="flex items-center">
+                  <div className="flex items-center">
                     <CheckCircle className="w-5 h-5 text-green-500 mr-3" />
                     <span className="text-gray-700 font-inter">Time Management</span>
                   </div>
                   <div className="flex items-center">
                     <CheckCircle className="w-5 h-5 text-green-500 mr-3" />
-                    <span className="text-gray-700 font-inter">Responsive and user-friendly UI design</span>
+                    <span className="text-gray-700 font-inter">Design System Development</span>
                   </div>
                 </div>
               </div>
@@ -727,59 +896,59 @@ const Portfolio = () => {
       </section>
 
       {/* Contact Section */}
-<section id="contact" className="py-20 bg-gray-50">
-  <Container>
-    <h2 className="text-4xl font-bold text-center mb-4 text-gray-800 font-playfair">
-      Let's Connect!
-    </h2>
-    <p className="text-center text-gray-600 mb-12 max-w-2xl mx-auto font-inter">
-      Mari terhubung dan berkolaborasi dalam project menarik
-    </p>
+      <section id="contact" className="py-20 bg-gray-50">
+        <Container>
+          <h2 className="text-4xl font-bold text-center mb-4 text-gray-800 font-playfair">
+            Let's Connect!
+          </h2>
+          <p className="text-center text-gray-600 mb-12 max-w-2xl mx-auto font-inter">
+            Mari terhubung dan berkolaborasi dalam project menarik
+          </p>
 
-    <div className="max-w-2xl mx-auto">
-      <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
-        <h3 className="text-2xl font-bold text-center mb-8 text-gray-800 font-playfair">
-          Get In Touch
-        </h3>
-        
-        <div className="space-y-6">
-          {/* Email */}
-          <a 
-            href="mailto:joseephineez@gmail.com"
-            className="flex items-center justify-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition duration-200 group"
-          >
-            <Mail className="w-6 h-6 text-gray-600 mr-4 group-hover:text-gray-800" />
-            <span className="text-gray-700 font-inter group-hover:text-gray-900">joseephineez@gmail.com</span>
-          </a>
+          <div className="max-w-2xl mx-auto">
+            <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
+              <h3 className="text-2xl font-bold text-center mb-8 text-gray-800 font-playfair">
+                Get In Touch
+              </h3>
+              
+              <div className="space-y-6">
+                {/* Email */}
+                <a 
+                  href="mailto:joseephineez@gmail.com"
+                  className="flex items-center justify-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition duration-200 group"
+                >
+                  <Mail className="w-6 h-6 text-gray-600 mr-4 group-hover:text-gray-800" />
+                  <span className="text-gray-700 font-inter group-hover:text-gray-900">joseephineez@gmail.com</span>
+                </a>
 
-          {/* LinkedIn */}
-          <a 
-            href="https://www.linkedin.com/in/josephine-antonia-01277038a/" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="flex items-center justify-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition duration-200 group"
-          >
-            <Linkedin className="w-6 h-6 text-gray-600 mr-4 group-hover:text-blue-600" />
-            <span className="text-gray-700 font-inter group-hover:text-gray-900">LinkedIn Profile</span>
-            <ExternalLink className="w-4 h-4 ml-2 text-gray-400 group-hover:text-gray-600" />
-          </a>
+                {/* LinkedIn */}
+                <a 
+                  href="https://www.linkedin.com/in/josephine-antonia-01277038a/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition duration-200 group"
+                >
+                  <Linkedin className="w-6 h-6 text-gray-600 mr-4 group-hover:text-blue-600" />
+                  <span className="text-gray-700 font-inter group-hover:text-gray-900">LinkedIn Profile</span>
+                  <ExternalLink className="w-4 h-4 ml-2 text-gray-400 group-hover:text-gray-600" />
+                </a>
 
-          {/* GitHub */}
-          <a 
-            href="https://github.com/Josephinnnes" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="flex items-center justify-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition duration-200 group"
-          >
-            <Github className="w-6 h-6 text-gray-600 mr-4 group-hover:text-gray-800" />
-            <span className="text-gray-700 font-inter group-hover:text-gray-900">GitHub Profile</span>
-            <ExternalLink className="w-4 h-4 ml-2 text-gray-400 group-hover:text-gray-600" />
-          </a>
-        </div>
-      </div>
-    </div>
-  </Container>
-</section>
+                {/* GitHub */}
+                <a 
+                  href="https://github.com/Josephinnnes" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition duration-200 group"
+                >
+                  <Github className="w-6 h-6 text-gray-600 mr-4 group-hover:text-gray-800" />
+                  <span className="text-gray-700 font-inter group-hover:text-gray-900">GitHub Profile</span>
+                  <ExternalLink className="w-4 h-4 ml-2 text-gray-400 group-hover:text-gray-600" />
+                </a>
+              </div>
+            </div>
+          </div>
+        </Container>
+      </section>
 
       {/* Footer */}
       <footer className="bg-gray-800 text-gray-300 py-8">
